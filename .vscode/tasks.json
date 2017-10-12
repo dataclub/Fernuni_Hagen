@@ -1,0 +1,13 @@
+{
+    "version": "0.1.0",
+    "command": "fpc",
+    "isShellCommand": true,
+    "args": ["-g", "${fileDirname}/${fileBasenameNoExtension}"],
+    "showOutput": "always",
+    "tasks": [
+        { 
+            "taskName": "build",
+            "suppressTaskName": true
+        }
+    ]
+}

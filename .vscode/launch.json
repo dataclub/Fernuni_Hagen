@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "type": "lldb-mi",
+            "request": "launch",
+            "name": "LLDB-Debug",
+            "target": "${fileDirname}/${fileBasenameNoExtension}",
+            "cwd": "${workspaceRoot}",
+            "lldbmipath": "/usr/local/bin/lldb-mi"
+        },
+        {
+            "type": "gdb",
+            "request": "launch",
+            "name": "GDB-Debug",
+            "target": "${fileDirname}/${fileBasenameNoExtension}",
+            "cwd": "${workspaceRoot}",
+            "gdbpath": "/usr/local/bin/gdb",
+            "preLaunchTask": "build"
+            
+        }
+    ],
+    "compounds": []
+}
