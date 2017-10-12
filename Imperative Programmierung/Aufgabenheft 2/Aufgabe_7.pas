@@ -49,11 +49,13 @@ Begin
     w := max (Feld, Feld[1], Feld[GRENZE])
   Else If (auswahl = 'B') Then
     Begin
+    {Richtige Lösung}
     w := max (Feld, (GRENZE-1) Div 2,
         (GRENZE-1) Div 2);
     End
   Else If (auswahl = 'C') Then
     Begin
+    {Richtige Lösung}
     If max (Feld, 1, (GRENZE-1) Div 2) >
         max (Feld, (GRENZE+1) Div 2, GRENZE)
         Then
@@ -63,12 +65,14 @@ Begin
     End
   Else If (auswahl = 'D') Then
     Begin
+    {Richtige Lösung}
     w := max (Feld, 1, GRENZE);
     If w <= GRENZE Then
         write (max (Feld, w, w));
     End
   Else If (auswahl = 'E') Then
     Begin
+    {Richtige Lösung}
     w1 := max (Feld, 1, GRENZE);
     w2 := max (Feld, 4, GRENZE-1);
     If (0 < w2) And (w1 <= GRENZE) Then
@@ -77,6 +81,4 @@ Begin
         w := max (Feld, 1, w)
         End;
     End;
-
-
 End.
