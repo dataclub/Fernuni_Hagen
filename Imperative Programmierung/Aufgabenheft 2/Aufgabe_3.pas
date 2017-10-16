@@ -20,51 +20,41 @@ Var
 
 Function ZeilenSummeKleiner (Var inMatrix : tMatrix;
                              inZeilenNr : integer) : boolean;
+  { ergibt true, falls die Summe aller Elemente mit dem
+    uebergebenen Zeilenindex kleiner ist als jede
+    Spaltensumme }
 
-{ ergibt true, falls die Summe aller Elemente mit dem
-      uebergebenen Zeilenindex kleiner ist als jede
-      Spaltensumme }
-
-Var 
+var 
   ZeilenSumme: integer;         { Summe der eingegebenen Zeilenmatrix }
   SpaltenSumme: integer;        { Summe einzelner Spalten bis SPALTENMAX }
   i: integer;                   { Laufvariable Zeilenmatrix }
   j: integer;                   { Laufvariable Spaltenmatrix }
 
-Begin
+begin
   ZeilenSumme := 0;
   ZeilenSummeKleiner := true;
 
   { Bilden der Summe aller Spalten für die angegebene Zeile inZeilenNr}
-  For i := 1 To SPALTENMAX Do
-    Begin
-      ZeilenSumme := ZeilenSumme + inMatrix[inZeilenNr][i];
-    End;
+  for i := 1 To SPALTENMAX do
+    ZeilenSumme := ZeilenSumme + inMatrix[inZeilenNr][i];
 
 
   j := 1;
-  Repeat
-{ Für alle Spalten durchlaufen, bis eine der Spaltensumme kleiner ist als die Zeilensumme }
+  repeat { Durchlaufen, bis eine der Spaltensumme kleiner ist als die Zeilensumme }
     SpaltenSumme := 0;
-    Begin
-      For i := 1 To ZEILENMAX Do
-        Begin
-          SpaltenSumme := SpaltenSumme + inMatrix[i][j];
-        End;
+    for i := 1 To ZEILENMAX do
+      SpaltenSumme := SpaltenSumme + inMatrix[i][j];
 
-      j := j + 1;
-    End;
-  Until (SpaltenSumme < ZeilenSumme) Or (j >= SPALTENMAX);
+    j := j + 1;
+  until (SpaltenSumme < ZeilenSumme) Or (j >= SPALTENMAX);
 
 
-{ Erneut überprüfen, ob tatsächlich die Spaltensumme kleiner ist als Zeilensumme,
+  { Erneut überprüfen, ob tatsächlich die Spaltensumme kleiner ist als Zeilensumme,
     den es gibt ja noch die Möglichkeit, dass einfach alle Spalten überprüft 
     wurden bis j>= SPALTENMAX
   }
-  If (SpaltenSumme <= ZeilenSumme) Then
-    Begin
-      ZeilenSummeKleiner := false;
-    End;
+  if (SpaltenSumme <= ZeilenSumme) then
+    ZeilenSummeKleiner := false;
 
 End;{ ZeilenSummeKleiner }
 

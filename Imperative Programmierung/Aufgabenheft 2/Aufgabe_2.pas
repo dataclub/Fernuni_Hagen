@@ -32,50 +32,41 @@ begin
     readln (Feld2[j]);
 
   { Verschmelzungsprozess beginnen }
-    i := 1;
+  i := 1;
   j := 1;
   k := 1;
 
-  Repeat
-    Begin
-      {Beide Parallel durchlaufen, bis einer davon eher fertig ist}
-      If (i <= FELDLAENGE1) And (j <= FELDLAENGE2) Then
-        Begin
-          If Feld1[i] < Feld2[j] Then {den Wert der kleiner ist in das ErgebnisFeld-Array schreiben}
-            Begin
-              ErgebnisFeld[k] := Feld1[i];
-              i := i + 1;
-            End
-          Else
-            Begin
-              ErgebnisFeld[k] := Feld2[j];
-              j := j + 1;
-            End;
+  repeat
+    {Beide Parallel durchlaufen, bis einer davon eher fertig ist}
+    if (i <= FELDLAENGE1) And (j <= FELDLAENGE2) Then
+    begin
+      If Feld1[i] < Feld2[j] then {den Wert der kleiner ist in das ErgebnisFeld-Array schreiben}
+      begin
+        ErgebnisFeld[k] := Feld1[i];
+        i := i + 1;
+      end
+      else
+      begin
+        ErgebnisFeld[k] := Feld2[j];
+        j := j + 1;
+      end
+    end
+    else If (i<=FELDLAENGE1) And (j>=FELDLAENGE2) then
+    {Wenn j eher fertig war, dann noch den Rest von i durchgehen}
+    begin
+      ErgebnisFeld[k] := Feld1[i];
+      i := i + 1;
+    end
+    else If (j<=FELDLAENGE2) And (i>=FELDLAENGE1) then
+    {Wenn i eher fertig war, dann noch die Werte von j durchgehen}
+    begin
+      ErgebnisFeld[k] := Feld2[j];
+      j := j + 1;
+    end;
+    k := k + 1; {Für das Ergebnisfeld}
+  until (i>=FELDLAENGE1+1) And (j>=FELDLAENGE2+1); {bis beide durchgelaufen sind}
 
-        End
-      Else
-        {Wenn j eher fertig war, dann noch den Rest von i durchgehen}
-        If (i<=FELDLAENGE1) And (j>=FELDLAENGE2) Then
-          Begin
-
-            ErgebnisFeld[k] := Feld1[i];
-            i := i + 1;
-
-          End
-      Else
-        {Wenn i eher fertig war, dann noch die Werte von j durchgehen}
-        If (j<=FELDLAENGE2) And (i>=FELDLAENGE1) Then
-          Begin
-
-            ErgebnisFeld[k] := Feld2[j];
-            j := j + 1;
-
-          End;
-      k := k + 1; {Für das Ergebnisfeld}
-    End
-  Until (i>=FELDLAENGE1+1) And (j>=FELDLAENGE2+1); {bis beide durchgelaufen sind}
-
-    writeln ('Das Ergebnisfeld ist:');
+  writeln ('Das Ergebnisfeld ist:');
   for k := 1 to ERGEBNISFELDLAENGE do
     write (ErgebnisFeld[k], ' ');
   writeln
