@@ -21,17 +21,17 @@ program TesteAnhaengen (input, output);
     die Liste mit Anfangszeiger inRefAnfang1 an.
     Zurueckgegeben wird outRefAnfang, der Anfangszeiger der Ergebnisliste. }
   var
-    inRefAnfang1Kopie : tRefListe;
+    inRefAnfang1Kopie : tRefListe;  {Hält die Anfangsposition von der Liste inRefAnfang1} 
   begin
     inRefAnfang1Kopie := inRefAnfang1;
-    while(inRefAnfang1^.next <> nil) do
+    while(inRefAnfang1^.next <> nil) do {bis die erste Liste durchgelaufen ist}
     begin
         inRefAnfang1 := inRefAnfang1^.next;
     end;
 
-    new(inRefAnfang1^.next);
-    inRefAnfang1^.next := inRefAnfang2;
-    outRefAnfang := inRefAnfang1Kopie;
+    new(inRefAnfang1^.next); {Speicherreservierung für die zweite Liste}
+    inRefAnfang1^.next := inRefAnfang2; {anhängen der zweiten Liste an die erste}
+    outRefAnfang := inRefAnfang1Kopie; {Anfangsposition der ersten Liste nehmen}
   end;
 
   procedure LiesListe(var outListe : tRefListe);
