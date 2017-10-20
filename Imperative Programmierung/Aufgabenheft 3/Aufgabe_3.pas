@@ -20,19 +20,20 @@ program TesteAnhaengen (input, output);
   { Haengt die lineare Liste mit Anfangszeiger inRefAnfang2 an
     die Liste mit Anfangszeiger inRefAnfang1 an.
     Zurueckgegeben wird outRefAnfang, der Anfangszeiger der Ergebnisliste. }
-  var
-    inRefAnfang1Kopie : tRefListe;  {Hält die Anfangsposition von der Liste inRefAnfang1} 
-  begin
-    inRefAnfang1Kopie := inRefAnfang1;
-    while(inRefAnfang1^.next <> nil) do {bis die erste Liste durchgelaufen ist}
-    begin
-        inRefAnfang1 := inRefAnfang1^.next;
-    end;
 
-    new(inRefAnfang1^.next); {Speicherreservierung für die zweite Liste}
-    inRefAnfang1^.next := inRefAnfang2; {anhängen der zweiten Liste an die erste}
-    outRefAnfang := inRefAnfang1Kopie; {Anfangsposition der ersten Liste nehmen}
-  end;
+  begin
+   outRefAnfang := inRefAnfang1;
+
+   if outRefAnfang = nil then {Sonderfall: Liste1 ist leer }
+     outRefAnfang := inRefAnfang2
+   else
+   begin
+     while (outRefAnfang^.next <> nil) do {bis die erste Liste durchgelaufen ist}
+       outRefAnfang := outRefAnfang^.next;
+     outRefAnfang^.next := inRefAnfang2; {anhängen der zweiten Liste an die erste}
+     outRefAnfang := inRefAnfang1; {Anfangsposition der ersten Liste nehmen}
+   end { if outRefAnfang = nil }
+  end; {anhaengen}
 
   procedure LiesListe(var outListe : tRefListe);
   { Liest eine (evtl. leere) Liste ein und gibt deren Anfangszeiger outListe zurueck. }
