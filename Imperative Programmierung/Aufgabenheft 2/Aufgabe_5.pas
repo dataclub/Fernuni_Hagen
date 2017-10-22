@@ -12,7 +12,7 @@ Var
   auswahl: char;
   i: integer;
 Begin
-  Suchwert := 105;
+  Suchwert := 75;
   For i := 0 To FELDGROESSE Do
     Begin
       Feld[i] := Random(i) + i * 10;

@@ -65,7 +65,7 @@ Begin
     End
   Else If (auswahl = 'D') Then
     Begin
-    {Richtige Lösung}
+    {Falsche Lösung, da w auch Minuszahl sein kann}
     w := max (Feld, 1, GRENZE);
     If w <= GRENZE Then
         write (max (Feld, w, w));
