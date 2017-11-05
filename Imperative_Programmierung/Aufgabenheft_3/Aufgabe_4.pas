@@ -17,27 +17,44 @@ program TesteSortiereListe(input, output);
   var
   ioRefListeKopie: tRefListe;
 
-  function fuegeInListe(ioRefListe, nextZeiger : tRefListe);
+  function insertInList(ioRefListe, nextElement : tRefListe);
+  var
+  ioRefListeInsert: tRefListe;
+  eingefuegt: boolean;
   begin
-      
+    if(ioRefListeInsert <> nil) then
+      ioRefListeInsert := ioRefListe;
+      eingefuegt := false;
+      while (ioRefListeInsert^.next <> nil) and (eingefuegt = false)
+      begin
+        if(ioRefListeInsert^.info < nextElement^.info) then
+        begin
+          nextElement^.next := ioRefListeInsert;
+          ioRefListeInsert := nextElement;
+          eingefuegt := true;
+        end
+        else
+          ioRefListeInsert := ioRefListeInsert^.next;
+      end;
+
+      ioRefListeInsert := ioRefListe;
+    end;
   end;
 
   begin
-    ioRefListeKopie := ioRefListe;
-
     if(ioRefListeKopie <> nil) then
     begin
+      ioRefListeKopie := ioRefListe;
         
-        
-        while(ioRefListeKopie^.next <> nil) do
-        begin
-            if(ioRefListeKopie^.info > ioRefListeKopie^.next^.info) then
-            begin
-                fuegeInListe(ioRefListe, ioRefListeKopie^.next);
-            end
-            else
-                ioRefListeKopie := ioRefListeKopie^.next;
-        end;
+      while(ioRefListeKopie^.next <> nil) do
+      begin
+          if(ioRefListeKopie^.info > ioRefListeKopie^.next^.info) then
+          begin
+              insertInList(ioRefListe, ioRefListeKopie^.next);
+          end
+          else
+              ioRefListeKopie := ioRefListeKopie^.next;
+      end;
     end;
         
       
