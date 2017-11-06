@@ -9,55 +9,90 @@ program TesteSortiereListe(input, output);
            end;
 
   var
-  RefListe : tRefListe;
+  RefListe: tRefListe;
 
   procedure SortiereListe (var ioRefListe : tRefListe);
   { sortiert eine lineare Liste aufsteigend }
 
   var
-  ioRefListeKopie: tRefListe;
-
-  function insertInList(ioRefListe, nextElement : tRefListe);
-  var
-  ioRefListeInsert: tRefListe;
+  ioRefListeScheife, ioRefListeInsert, PredZeiger, Zeiger, PredZeigerInsert, ZeigerInsert: tRefListe;
   eingefuegt: boolean;
-  begin
-    if(ioRefListeInsert <> nil) then
-      ioRefListeInsert := ioRefListe;
-      eingefuegt := false;
-      while (ioRefListeInsert^.next <> nil) and (eingefuegt = false)
-      begin
-        if(ioRefListeInsert^.info < nextElement^.info) then
-        begin
-          nextElement^.next := ioRefListeInsert;
-          ioRefListeInsert := nextElement;
-          eingefuegt := true;
-        end
-        else
-          ioRefListeInsert := ioRefListeInsert^.next;
-      end;
 
-      ioRefListeInsert := ioRefListe;
-    end;
-  end;
+
 
   begin
-    if(ioRefListeKopie <> nil) then
+    if(ioRefListe <> nil) then
     begin
-      ioRefListeKopie := ioRefListe;
-        
-      while(ioRefListeKopie^.next <> nil) do
+      ioRefListeScheife := ioRefListe;
+
+      PredZeiger := ioRefListeScheife;
+      Zeiger := nil;
+      if(ioRefListeScheife^.next <> nil) then
       begin
-          if(ioRefListeKopie^.info > ioRefListeKopie^.next^.info) then
+        Zeiger := ioRefListeScheife^.next;
+        ioRefListeScheife := Zeiger;
+      end;
+
+
+      while(ioRefListeScheife <> nil) do
+      begin
+
+          if(Zeiger^.info < PredZeiger^.info) then { der aktuelle Wert ist kleiner, als der vorherige }
           begin
-              insertInList(ioRefListe, ioRefListeKopie^.next);
-          end
-          else
-              ioRefListeKopie := ioRefListeKopie^.next;
+
+            { Liste erneut durchlaufen und Zeiger an die richtige Stelle einfügen}
+            ioRefListeInsert := ioRefListe;
+            eingefuegt := false;
+
+            PredZeigerInsert := ioRefListeInsert;
+            ZeigerInsert := nil;
+            if(ioRefListeScheife^.next <> nil) then
+            begin
+              ZeigerInsert := ioRefListeInsert^.next;
+              ioRefListeInsert := ZeigerInsert;
+            end;
+            
+            
+            while(ioRefListeInsert <> nil) and (eingefuegt = false) do
+            begin
+              if (Zeiger^.info > PredZeigerInsert^.info) and (Zeiger^.info <= ZeigerInsert^.info) then
+              begin
+                { Zwischen der Liste einfügen}
+                eingefuegt := true;
+                PredZeiger^.next := Zeiger^.next;
+                
+                Zeiger^.next := PredZeigerInsert^.next;
+                PredZeigerInsert^.next := Zeiger;
+
+                Zeiger := PredZeiger;
+
+              end
+              else if(Zeiger^.info <= PredZeigerInsert^.info) then
+              begin
+                { Zu Anfang der Liste einfügen}
+                eingefuegt := true;
+                PredZeiger^.next := Zeiger^.next;
+
+                Zeiger^.next := PredZeigerInsert;
+                PredZeigerInsert := Zeiger;
+                ioRefListe := PredZeigerInsert;
+
+                Zeiger := PredZeiger;
+              end
+              else
+              begin
+                PredZeigerInsert := ZeigerInsert;
+                ZeigerInsert := ioRefListeInsert^.next;
+                ioRefListeInsert := ZeigerInsert;
+              end
+            end
+          end;
+
+          PredZeiger := Zeiger;
+          Zeiger := PredZeiger^.next;
+          ioRefListeScheife := Zeiger;
       end;
     end;
-        
-      
   end;
 
   procedure Anhaengen(var ioListe : tRefListe;
