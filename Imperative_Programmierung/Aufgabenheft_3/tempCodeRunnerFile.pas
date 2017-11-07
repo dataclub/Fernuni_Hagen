@@ -1,1 +1,1 @@
-ZeigerInsert
+                  eingefuegt := true;

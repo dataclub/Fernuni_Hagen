@@ -15,84 +15,100 @@ program TesteSortiereListe(input, output);
   { sortiert eine lineare Liste aufsteigend }
 
   var
-  ioRefListeScheife, ioRefListeInsert, PredZeiger, Zeiger, PredZeigerInsert, ZeigerInsert: tRefListe;
-  eingefuegt: boolean;
-
-
+  outRefListe,
+  outRefListeScheife,          { Zeigerdurchlauf, für die erste Schleife, läuft einmal die Liste durch }
+  outRefListeInsert,           { Zeigerdurchlauf, für die zweite Schleife, zum Sortieren }
+  PredZeiger,                 { Vorheriger Wert des Zeigers der ersten Schleife}
+  Zeiger,                     { Aktueller Wert des Zeigers der ersten Schleife}
+  PredZeigerInsert,           { Vorheriger Wert des Zeigers der zweiten Schleife}
+  ZeigerInsert: tRefListe;    { Aktueller Wert des Zeigers der zweiten Schleife}
+  eingefuegt: boolean;        { Abbruchkriterum der zweiten While-Schleife }
 
   begin
-    if(ioRefListe <> nil) then
+    outRefListe := ioRefListe;
+    if(outRefListe <> nil) then { Liste nicht leer }
     begin
-      ioRefListeScheife := ioRefListe;
+      outRefListeScheife := outRefListe; { Initialisierung Schleifen-Zeiger, erste Schleife }
 
-      PredZeiger := ioRefListeScheife;
+      PredZeiger := outRefListeScheife; { Initialisierung Zeiger, vorheriger Wert }
       Zeiger := nil;
-      if(ioRefListeScheife^.next <> nil) then
+      if(outRefListeScheife^.next <> nil) then
       begin
-        Zeiger := ioRefListeScheife^.next;
-        ioRefListeScheife := Zeiger;
-      end;
+        Zeiger := outRefListeScheife^.next; { Initialisierung Zeiger, aktueller Wert }
+        outRefListeScheife := Zeiger;
+      end; { if(outRefListeScheife^.next <> nil)}
 
-
-      while(ioRefListeScheife <> nil) do
+      if(Zeiger <> nil) then { Darf nicht leer sein, da mind. 2 Werte zum Sortieren erforderlich sind }
+      while(outRefListeScheife <> nil) do
       begin
+        { Liste ist noch unsortiert }
+        if(Zeiger^.info < PredZeiger^.info) then 
+        begin 
 
-          if(Zeiger^.info < PredZeiger^.info) then { der aktuelle Wert ist kleiner, als der vorherige }
+          { Kleinerer Wert gefunden, daher die Liste erneut durchlaufen, 
+            um den Zeiger an die richtige Position einfügen}
+          outRefListeInsert := outRefListe;
+          eingefuegt := false;  { Initialisierung Abbruchkriterium }
+
+          PredZeigerInsert := outRefListeInsert; { Initialisierung Zeiger, vorheriger Wert, zweite Schleife }
+          ZeigerInsert := nil;
+          if(outRefListeScheife^.next <> nil) then
           begin
-
-            { Liste erneut durchlaufen und Zeiger an die richtige Stelle einfügen}
-            ioRefListeInsert := ioRefListe;
-            eingefuegt := false;
-
-            PredZeigerInsert := ioRefListeInsert;
-            ZeigerInsert := nil;
-            if(ioRefListeScheife^.next <> nil) then
-            begin
-              ZeigerInsert := ioRefListeInsert^.next;
-              ioRefListeInsert := ZeigerInsert;
-            end;
-            
-            
-            while(ioRefListeInsert <> nil) and (eingefuegt = false) do
-            begin
-              if (Zeiger^.info > PredZeigerInsert^.info) and (Zeiger^.info <= ZeigerInsert^.info) then
-              begin
-                { Zwischen der Liste einfügen}
-                eingefuegt := true;
-                PredZeiger^.next := Zeiger^.next;
-                
-                Zeiger^.next := PredZeigerInsert^.next;
-                PredZeigerInsert^.next := Zeiger;
-
-                Zeiger := PredZeiger;
-
-              end
-              else if(Zeiger^.info <= PredZeigerInsert^.info) then
-              begin
-                { Zu Anfang der Liste einfügen}
-                eingefuegt := true;
-                PredZeiger^.next := Zeiger^.next;
-
-                Zeiger^.next := PredZeigerInsert;
-                PredZeigerInsert := Zeiger;
-                ioRefListe := PredZeigerInsert;
-
-                Zeiger := PredZeiger;
-              end
-              else
-              begin
-                PredZeigerInsert := ZeigerInsert;
-                ZeigerInsert := ioRefListeInsert^.next;
-                ioRefListeInsert := ZeigerInsert;
-              end
-            end
+            ZeigerInsert := outRefListeInsert^.next;  { Initialisierung Zeiger, aktueller Wert, zweite Schleife }
+            outRefListeInsert := ZeigerInsert;
           end;
+          
+          { Da (outRefListeScheife^.next = nil) ist, ist das der letzte Zeiger }
+          if(ZeigerInsert = nil) then 
+            ZeigerInsert := PredZeiger;
 
-          PredZeiger := Zeiger;
-          Zeiger := PredZeiger^.next;
-          ioRefListeScheife := Zeiger;
-      end;
+          { Durchlaufe, bis Abbruchkriterium oder bis die zweite Schleife durchgelaufen ist }
+          while(outRefListeInsert <> nil) and (eingefuegt = false) do
+          begin
+            { Falls Zeigerwert größer als der vorherige und kleiner als der nachfolgende, dann dazwischen einfügen}
+            if (Zeiger^.info > PredZeigerInsert^.info) and (Zeiger^.info <= ZeigerInsert^.info) then
+            begin
+              { Zeiger zwischen den Werten der Liste einfügen}
+              eingefuegt := true;
+              PredZeiger^.next := Zeiger^.next; { Alten Wert des Zeigers puffern}
+              
+              Zeiger^.next := PredZeigerInsert^.next;
+              PredZeigerInsert^.next := Zeiger;
+
+              Zeiger := PredZeiger; { aktuellen Zeiger der ersten Schleife mit dem nächsten Wert fortsetzen}
+            end {(Zeiger^.info > PredZeigerInsert^.info) and (Zeiger^.info <= ZeigerInsert^.info)}
+            { Der Wert des Zeigers ist kleiner als der erste Zeigerwert, daher am Anfang einfügen}
+            else if(Zeiger^.info <= PredZeigerInsert^.info) then
+            begin
+              { Zum Anfang der Liste einfügen}
+              eingefuegt := true;
+              PredZeiger^.next := Zeiger^.next;
+
+              Zeiger^.next := PredZeigerInsert;
+              PredZeigerInsert := Zeiger;
+              outRefListe := PredZeigerInsert;
+
+              Zeiger := PredZeiger; { aktuellen Zeiger der ersten Schleife mit dem nächsten Wert fortsetzen}
+            end { if(Zeiger^.info <= PredZeigerInsert^.info) }
+            else
+            { sonst, vorherigen und aktuellen Zeiger setzen und mit der zweite Schleife weitermachen, 
+              bis obere Bedingungen zutreffen, oder die Liste zu Ende läuft}
+            begin
+              PredZeigerInsert := ZeigerInsert;
+              ZeigerInsert := outRefListeInsert^.next;
+              outRefListeInsert := ZeigerInsert;
+            end
+          end
+        end; { if(Zeiger^.info < PredZeiger^.info) }
+
+        { Setzen der Zeiger und weitermachen mit der ersten Schleife,
+          bis kleinerer Wert gefunden wurde, sodass es auch sortiert werden kann}
+        PredZeiger := Zeiger;
+        Zeiger := PredZeiger^.next;
+        outRefListeScheife := Zeiger;
+      end; { while(outRefListeScheife <> nil)}
     end;
+    ioRefListe := outRefListe;
   end;
 
   procedure Anhaengen(var ioListe : tRefListe;
