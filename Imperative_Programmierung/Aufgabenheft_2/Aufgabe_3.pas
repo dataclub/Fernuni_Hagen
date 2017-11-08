@@ -1,24 +1,24 @@
 
-Program MatrixSummen (input, output);
+program MatrixSummen (input, output);
 
 { ueberprueft bei einer Matrix von integer-Zahlen, ob
   jede Spaltensumme groesser ist als die Zeilensumme einer
   angegebenen Zeile }
 
-Const 
+const 
   ZEILENMAX = 3;
   SPALTENMAX = 4;
 
-Type 
-  tMatrix = array [1..ZEILENMAX, 1..SPALTENMAX] Of integer;
+type 
+  tMatrix = array [1..ZEILENMAX, 1..SPALTENMAX] of integer;
 
-Var 
+var 
   Matrix : tMatrix;
   ZeilenNr,
   SpaltenNr,
   Eingabe : integer;
 
-Function ZeilenSummeKleiner (Var inMatrix : tMatrix;
+function ZeilenSummeKleiner (var inMatrix : tMatrix;
                              inZeilenNr : integer) : boolean;
   { ergibt true, falls die Summe aller Elemente mit dem
     uebergebenen Zeilenindex kleiner ist als jede
@@ -35,14 +35,14 @@ begin
   ZeilenSummeKleiner := true;
 
   { Bilden der Summe aller Spalten für die angegebene Zeile inZeilenNr}
-  for i := 1 To SPALTENMAX do
+  for i := 1 to SPALTENMAX do
     ZeilenSumme := ZeilenSumme + inMatrix[inZeilenNr][i];
 
 
   j := 1;
   repeat { Durchlaufen, bis eine der Spaltensumme kleiner ist als die Zeilensumme }
     SpaltenSumme := 0;
-    for i := 1 To ZEILENMAX do
+    for i := 1 to ZEILENMAX do
       SpaltenSumme := SpaltenSumme + inMatrix[i][j];
 
     j := j + 1;
@@ -56,26 +56,26 @@ begin
   if (SpaltenSumme <= ZeilenSumme) then
     ZeilenSummeKleiner := false;
 
-End;{ ZeilenSummeKleiner }
+end;{ ZeilenSummeKleiner }
 
-Begin { Matrixelemente einlesen }
-  For ZeilenNr := 1 To ZEILENMAX Do
-    For SpaltenNr := 1 To SPALTENMAX Do
+begin { Matrixelemente einlesen }
+  for ZeilenNr := 1 to ZEILENMAX Do
+    for SpaltenNr := 1 to SPALTENMAX Do
       read (Matrix[ZeilenNr, SpaltenNr]);
-  Repeat
+  repeat
     write ('Welche Zeile soll ueberprueft werden ? (1..', ZEILENMAX,
            ') (anderes = Ende) ');
     readln (Eingabe);
-    If (Eingabe > 0) And (Eingabe <= ZEILENMAX) Then
-      Begin
+    if (Eingabe > 0) And (Eingabe <= ZEILENMAX) then
+      begin
         ZeilenNr := Eingabe;
         { hier wird die Funktion ZeilenSummeKleiner aufgerufen }
-        If ZeilenSummeKleiner (Matrix,ZeilenNr) Then
+        if ZeilenSummeKleiner (Matrix,ZeilenNr) then
           writeln ('Jede Spaltensumme ist groesser als die ', 'Zeilensumme der '
                    , ZeilenNr, '. Zeile.')
-        Else
+        else
           writeln ('Es sind nicht alle Spaltensummen groesser als die ',
                    'Zeilensumme der ', ZeilenNr, '. Zeile.')
-      End;
-  Until (Eingabe <= 0) Or (Eingabe > ZEILENMAX)
-End. { MatrixSummen }
+      end;
+  until (Eingabe <= 0) Or (Eingabe > ZEILENMAX)
+end. { MatrixSummen }

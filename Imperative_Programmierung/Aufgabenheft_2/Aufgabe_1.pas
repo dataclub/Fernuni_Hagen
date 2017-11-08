@@ -1,4 +1,4 @@
-Program Maximum (input, output);
+program Maximum (input, output);
 
 { bestimmt das Maximum einer Zahlenfolge von einzulesenden integer-Zahlen. 
 Dabei wird die letzte 0 nicht berücksichtigt! }
@@ -20,8 +20,12 @@ begin
   readln (Zahl);
   Max := Zahl;
 
-  repeat
-    if (Zahl <> 0) then
+  if(Zahl = 0) then
+    writeln('Leere Eingabefolge!')
+  else
+  begin
+    repeat
+      if (Zahl <> 0) then
       begin
         if (Zahl > Max) then
           Max := Zahl;
@@ -31,12 +35,7 @@ begin
         write(i, '. Wert: ');
         readln (Zahl);
       end; {Zahl <> 0}
-  until (Zahl = 0); {repeat-schleife-ENDE} {sobald Zahl = 0}
-
-  writeln('Leere Eingabefolge!');
-  {Wenn die erste Zahl keine 0 war}
-  if (i > 1) then
-  begin
+    until (Zahl = 0); {repeat-schleife-ENDE} {sobald Zahl = 0}
     writeln ('Das Maximum ist: ', Max, '.');
   end;
 end.
