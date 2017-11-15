@@ -1,1 +1,1 @@
-writeln(inRefAnfang^.info);
+UNTEN
