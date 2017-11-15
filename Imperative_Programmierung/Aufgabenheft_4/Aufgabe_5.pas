@@ -130,14 +130,23 @@ Baum := Zeiger6;
     read(auswahl);
 
     If (auswahl = 'A') Then
+        {Falsche Lösung, da zu Anfang 6 geschrieben wird.
+        Daher nicht passend mit der Aufgabenstellung}
         SymAusgabeA(Baum)
     else If (auswahl = 'B') Then
+        {Richtige Lösung, zuerst werden links alle durchgegangen und angezeigt,
+        danach die rechten}
        SymAusgabeB(Baum)
     else If (auswahl = 'C') Then
+        {Richtige Lösung, der Unterschied zu B ist nur, dass hier keine zusätzliche Abfrage auf nil pro links/rechts erforderlich ist,
+        da es vom if bei jedem Durchlauf getan wird.}
        SymAusgabeC(Baum)
     else If (auswahl = 'D') Then
+        {Falsche Lösung, erst werde die linken, danach die rechten Element durchgegangen
+        Danach erst geschrieben. Das hat den Effekt, dass durcherst die rechten ausgegeben werden}
        SymAusgabeD(Baum)
     else If (auswahl = 'E') Then
+        {Richtige Lösung, ist nur eine Zusammenfassung von B und C}
         SymAusgabeE(Baum)
 
 end.
