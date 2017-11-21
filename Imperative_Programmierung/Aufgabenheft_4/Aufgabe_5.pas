@@ -134,8 +134,7 @@ Baum := Zeiger6;
         Daher nicht passend mit der Aufgabenstellung}
         SymAusgabeA(Baum)
     else If (auswahl = 'B') Then
-        {Richtige Lösung, zuerst werden links alle durchgegangen und angezeigt,
-        danach die rechten}
+        {Falsche Lösung, da nicht für leere Liste gedacht, da ein leerer Baum am Anfang nicht beachtet wird}
        SymAusgabeB(Baum)
     else If (auswahl = 'C') Then
         {Richtige Lösung, der Unterschied zu B ist nur, dass hier keine zusätzliche Abfrage auf nil pro links/rechts erforderlich ist,
