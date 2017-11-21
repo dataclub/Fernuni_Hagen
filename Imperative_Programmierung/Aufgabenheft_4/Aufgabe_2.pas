@@ -15,7 +15,42 @@ var
   
 function BlattMax ( inRefWurzel : tRefBinBaum; inPfadMax : tNatZahl) : Boolean;
   { prüft ob alle Blätter des Baumes die Maxima der Pfade zu ihnen sind }
+  var returnValue : boolean;    { Zusätzlicher Rückgabe-Wert, womit geprüft wird, ob Blatt größer/kleiner als inPfadMax ist}
+
   begin
+    returnValue := true; { Default: es wird angenommen, dass Baum sein eigener inPfadMax ist}
+
+    if inRefWurzel <> nil then { Jeder durchzulaufende Knoten/Baum ist nicht leer}
+    begin
+
+        if (inRefWurzel^.links <> nil) or (inRefWurzel^.rechts <> nil) then 
+        begin { Sollten weitere Knoten rechts oder links vorhanden sein, dann muss weiter durchgegangen werden, weil Blatt noch nicht erreicht! }
+            { Wenn der inPfadMax vom vorherigen Knoten kleiner ist, dann ist "inPfadMax = Der Wert des neuen Knoten",
+              d.h. alle inPfad-Werte der weiteren Knoten müssen größer sein, als der neugesetzte inPfadMax, da sonst der Baum kaputt ist }
+            if(inPfadMax < inRefWurzel^.Wert) then 
+              inPfadMax := inRefWurzel^.Wert;
+
+            { Es müssen linke und rechte-Knoten weiter geprüft werden}
+            if inRefWurzel^.links <> nil  then
+            begin
+                returnValue := BlattMax(inRefWurzel^.links, inPfadMax);
+            end; { inRefWurzel^.links <> nil }
+            
+            if (inRefWurzel^.rechts <> nil) and (returnValue = true) then
+            begin { Die Abfrage auf "returnValue = true" muss sein, da für den false-Fall sonst der returnValue überschrieben wird}
+                returnValue := BlattMax(inRefWurzel^.rechts, inPfadMax);
+            end; { inRefWurzel^.rechts <> nil }
+        
+        end
+        else
+        begin { Der Baum wird solange durchlaufen, bis man auf ein Blatt stößt, hier folgt nun: }
+            { Ist ein Blatt gefunden, da weder links noch rechts weitere Knoten vorhanden sind, dann muss der Wert des Blattes größer sein als inPfadMax! }
+            if(inRefWurzel^.Wert < inPfadMax) then { Wenn Blatt kleiner als inPfadMax, dann false}
+              returnValue := false;
+        end; { if (inRefWurzel^.links <> nil) or (inRefWurzel^.rechts <> nil) }
+    end;
+
+    BlattMax := returnValue;
   end;
   
 procedure BaumAufbauen (var outWurzel : tRefBinBaum) ;
